@@ -42,7 +42,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 all : target $(TESTS)
 
 clean :
-	rm -f ${TARGET_DIR}
+	rm -rf ${TARGET_DIR}
 
 target :
 	mkdir target
