@@ -1,0 +1,16 @@
+cpp-project-skeleton
+====================
+
+Provides a skeleton for a C++ project that
+will be using gtest.
+
+Directories
+-----------
+src
+  - Source code should go here
+
+target
+  - Compiled source code will be compiled to here
+
+vendor
+  - Third party project dependencies are stored here
