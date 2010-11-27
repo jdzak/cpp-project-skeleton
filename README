@@ -14,3 +14,10 @@ target
 
 vendor
   - Third party project dependencies are stored here
+
+Getting Started
+---------------
+1. Put your code and test code in the src directory.
+2. Update the Makefile to include instructions to build your source code.
+3. Run make.
+4. Run your compiled code in the target/ directory.
