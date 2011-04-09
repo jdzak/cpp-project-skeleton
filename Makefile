@@ -16,11 +16,18 @@
 # Remember to tweak this if you move this file.
 GTEST_DIR = vendor/gtest
 
-# Where to find user code.
-SRC_DIR = src
+# Where to main program code.
+MAIN_DIR = main
+
+# Where to find test code
+TEST_DIR = test
+
+# Name of target directory
+TARGET_DIR_NAME = target
 
 # Target directory where the code will compile to
-TARGET_DIR = target
+MAIN_TARGET_DIR = ${MAIN_DIR}/${TARGET_DIR_NAME}
+TEST_TARGET_DIR = ${TEST_DIR}/${TARGET_DIR_NAME}
 
 # Flags passed to the preprocessor.
 CPPFLAGS += -I$(GTEST_DIR)/include
@@ -42,10 +49,12 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 all : target $(TESTS)
 
 clean :
-	rm -rf ${TARGET_DIR}
+	rm -rf ${MAIN_TARGET_DIR}
+	rm -rf ${TEST_TARGET_DIR}
 
 target :
-	mkdir target
+	mkdir -p ${MAIN_TARGET_DIR}
+	mkdir -p ${TEST_TARGET_DIR}
 
 # Builds gtest.a and gtest_main.a.
 
@@ -59,28 +68,28 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 # compiles fast and for ordinary users its source rarely changes.
 gtest-all.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
-            $(GTEST_DIR)/src/gtest-all.cc -o ${TARGET_DIR}/$@
+            $(GTEST_DIR)/src/gtest-all.cc -o ${TEST_TARGET_DIR}/$@
 
 gtest_main.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
-            $(GTEST_DIR)/src/gtest_main.cc -o ${TARGET_DIR}/$@
+            $(GTEST_DIR)/src/gtest_main.cc -o ${TEST_TARGET_DIR}/$@
 
 gtest.a : gtest-all.o
-	$(AR) $(ARFLAGS) ${TARGET_DIR}/$@ ${TARGET_DIR}/$^
+	$(AR) $(ARFLAGS) ${TEST_TARGET_DIR}/$@ ${TEST_TARGET_DIR}/$^
 
 gtest_main.a : gtest-all.o gtest_main.o
-	$(AR) $(ARFLAGS) ${TARGET_DIR}/gtest_main.a ${TARGET_DIR}/gtest-all.o ${TARGET_DIR}/gtest_main.o
+	$(AR) $(ARFLAGS) ${TEST_TARGET_DIR}/gtest_main.a ${TEST_TARGET_DIR}/gtest-all.o ${TEST_TARGET_DIR}/gtest_main.o
 
 # Builds a sample test.  A test should link with either gtest.a or
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-sample1.o : $(SRC_DIR)/sample1.cc $(SRC_DIR)/sample1.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/sample1.cc -o ${TARGET_DIR}/$@
-
-sample1_unittest.o : $(SRC_DIR)/sample1_unittest.cc \
-                     $(SRC_DIR)/sample1.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/sample1_unittest.cc -o ${TARGET_DIR}/$@
-
 sample1_unittest : sample1.o sample1_unittest.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread ${TARGET_DIR}/sample1.o ${TARGET_DIR}/sample1_unittest.o ${TARGET_DIR}/gtest_main.a -o ${TARGET_DIR}/$@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread ${MAIN_TARGET_DIR}/sample1.o ${TEST_TARGET_DIR}/sample1_unittest.o ${TEST_TARGET_DIR}/gtest_main.a -o ${TEST_TARGET_DIR}/$@
+
+sample1.o : $(MAIN_DIR)/sample1.cc $(MAIN_DIR)/sample1.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(MAIN_DIR)/sample1.cc -o ${MAIN_TARGET_DIR}/$@
+
+sample1_unittest.o : $(TEST_DIR)/sample1_unittest.cc \
+                     $(MAIN_DIR)/sample1.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TEST_DIR)/sample1_unittest.cc -o ${TEST_TARGET_DIR}/$@
