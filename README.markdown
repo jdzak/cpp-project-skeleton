@@ -15,6 +15,7 @@ Directories
   Unit tests
 
 vendor
+
   Third party project dependencies (e.g. googletest)
 
 Getting Started
