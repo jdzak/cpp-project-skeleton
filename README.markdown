@@ -14,7 +14,7 @@ Directories
 
   Unit tests
 
-vendor
+* vendor
 
   Third party project dependencies (e.g. googletest)
 
