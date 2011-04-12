@@ -1,4 +1,14 @@
 #!/bin/bash
+
+############################################
+# TEST RUNNER                              #
+#                                          #
+# You can run the test runner two ways     #
+# 1. No arguments (All tests)              #
+# 2. One argument (One test)               #
+#                                          #
+############################################
+
 make
 
 TEST_DIR="test/build"
