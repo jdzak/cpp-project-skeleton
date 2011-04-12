@@ -6,17 +6,11 @@ uses googletest.
 
 Directories
 -----------
-* src
-  
-  Application code
+* src (Application code)
 
-* test
+* test (Unit tests)
 
-  Unit tests
-
-* vendor
-
-  Third party project dependencies (e.g. googletest)
+* vendor (Third party project dependencies like googletest)
 
 Getting Started
 ---------------
